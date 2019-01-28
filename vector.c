@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "datatype.h"
 #include "vector.h"
 #include "sort_find.h"
 
@@ -10,7 +9,17 @@ static void __vector_element_sort(vector_handle *handle)
     items_sort((void *)((UINT8 *)handle->storage + handle->element_size), handle->count - 1, handle->element_size);
 }
 
+static void __vector_print_element(vector_handle *handle)
+{
+    UINT8 i = 0;
 
+    printf("=======================================================\n");
+    for(i = 1; i < handle->count; i++)
+    {
+        printf("Index:%d, element mac:%s\n", i, (INT8 *)((INT8 *)(handle->storage) + handle->element_size * i));
+    }
+    printf("=======================================================\n");
+}
 vector_handle *vector_create(UINT32 element_size)
 {
     vector_handle *vector = NULL;
@@ -29,7 +38,7 @@ vector_handle *vector_create(UINT32 element_size)
             vector = NULL;
         }
         else
-        {/*鏌ユ壘绠楁硶闇�瑕佸厛鍒嗛厤涓�涓猠lement绌洪棿锛屾绌洪棿涓嶅瓨鍌╡lement淇℃伅*/
+        {/*查找算法需要先分配一个element空间，此空间不存储element信息*/
             vector->storage = (void *)malloc(element_size);
             if(NULL == vector->storage)
             {
@@ -87,7 +96,7 @@ INT8 vector_add_element(vector_handle *handle, const void *elements, UINT32 elem
                     memcpy((void *)((INT8 *)temp + cur_size), elements, append_size);
                     handle->storage = temp;
                     handle->count += 1;
-                    /*鎺掑簭*/
+                    /*排序*/
                     __vector_element_sort(handle);
                     result = VECTOR_OPER_SUCCESS;
                 }
@@ -95,6 +104,7 @@ INT8 vector_add_element(vector_handle *handle, const void *elements, UINT32 elem
         }
     }
 
+    __vector_print_element(handle);
     return result;
 }
 
@@ -127,7 +137,7 @@ INT8 vector_delete_element(vector_handle *handle, const INT8 *target)
             UINT8 *storage_end = (UINT8 *)(handle->storage) + (handle->count * handle->element_size);
             UINT8 *del_ele_end = (UINT8 *)element + handle->element_size;
 
-            memmove(element, del_ele_end, storage_end - del_ele_end);   /*灏嗗垹闄ゆ潯鐩悗闈㈢殑鏉＄洰鎷疯礉鍒板垹闄ゆ潯鐩殑浣嶇疆*/
+            memmove(element, del_ele_end, storage_end - del_ele_end);   /*将删除条目后面的条目拷贝到删除条目的位置*/
             handle->count -= 1;
             element = realloc(handle->storage, (handle->element_size * handle->count));
             if(NULL == element)
@@ -143,7 +153,7 @@ INT8 vector_delete_element(vector_handle *handle, const INT8 *target)
             }
         }
     }
-
+    __vector_print_element(handle);
     return result;
 }
 

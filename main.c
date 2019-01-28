@@ -19,9 +19,7 @@ typedef struct
 int main(int argc, char *argv[])
 {
     cloud_data cloud = {0};
-    device_register dev = {"123456"};
-    INT8 ret = 0;
-    
+    device_register dev_reg  = {0};
     cloud.vector = vector_create(sizeof(device_register));
     if(NULL == cloud.vector)
     {
@@ -29,8 +27,16 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    ret = vector_add_element(cloud.vector, (void *)&dev, 1);
-    printf("vector add result:%d\n", ret);
- //   getchar();
+    strcpy(dev_reg.mac, "123456");
+    vector_add_element(cloud.vector, (void *)&dev_reg, 1);
+    strcpy(dev_reg.mac, "789");
+    vector_add_element(cloud.vector, (void *)&dev_reg, 1);
+    strcpy(dev_reg.mac, "abc");
+    vector_add_element(cloud.vector, (void *)&dev_reg, 1);
+    strcpy(dev_reg.mac, "0123456");
+    vector_add_element(cloud.vector, (void *)&dev_reg, 1);
+    vector_add_element(cloud.vector, (void *)&dev_reg, 1);
+    vector_delete_element(cloud.vector, "789");
+    vector_delete_element(cloud.vector, "789");
     return 0;
 }

@@ -1,6 +1,6 @@
 #ifndef VECTOR_H
 #define VECTOR_H
-
+#include "datatype.h"
 enum
 {
     VECTOR_LEAK_MEM = -12,

@@ -9,7 +9,7 @@
              const void *b
  * @param[out] none
  * @return static
- * @details 瀛楃涓叉瘮杈�
+ * @details 字符串比较
  * @author sdc
 *****************************************************************************/
 static INT32 __item_cmp(const void *a, const void *b)
@@ -25,10 +25,10 @@ static INT32 __item_cmp(const void *a, const void *b)
              UINT32 item_size
  * @param[out] none
  * @return void
- * @details 浣跨敤浜屽垎鏌ユ壘锛屼粠src_addr涓煡鎵総arget
+ * @details 使用二分查找，从src_addr中查找target
  * @author sdc
 *****************************************************************************/
-void *item_find(const INT8 *target, void *src_addr, UINT8 item_count, UINT32 item_size)
+void *item_find(INT8 *target, void *src_addr, UINT8 item_count, UINT32 item_size)
 {
     return bsearch(target, src_addr, item_count, item_size, __item_cmp);
 }
@@ -40,7 +40,7 @@ void *item_find(const INT8 *target, void *src_addr, UINT8 item_count, UINT32 ite
              UINT32 item_size
  * @param[out] none
  * @return
- * @details 灏唖rc_addr鎸囧悜鐨勫唴瀹硅繘琛屾帓搴�
+ * @details 将src_addr指向的内容进行排序
  * @author sdc
 *****************************************************************************/
 void items_sort(void *src_addr, UINT8 items_count, UINT32 item_size)
