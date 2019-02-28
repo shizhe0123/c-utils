@@ -9,7 +9,7 @@ enum
     VECTOR_ELE_EXISTED = -2,
     VECTOR_OPER_FAILED = -1,
     VECTOR_OPER_SUCCESS = 0
-    
+
 };
 
 
@@ -24,7 +24,7 @@ typedef vector vector_handle;
 
 /*****************************************************************************
  * @brief vector_create
- * @param[in] UINT32 element_size:条目的大小 
+ * @param[in] UINT32 element_size:条目的大小
  * @param[out] none
  * @return extern
  * @details 创建vector
@@ -33,8 +33,8 @@ typedef vector vector_handle;
 extern  vector_handle   *vector_create(UINT32 element_size);
 /*****************************************************************************
  * @brief vector_find_element
- * @param[in] vector_handle *handle:vector句柄  
-             const INT8 *target:需要查找的字符串     
+ * @param[in] vector_handle *handle:vector句柄
+             const INT8 *target:需要查找的字符串
  * @param[out] none
  * @return extern
  * @details 查找条目
@@ -44,8 +44,8 @@ extern  vector_handle   *vector_create(UINT32 element_size);
 extern  vector_handle   *vector_find_element(vector_handle *handle, const INT8 *target);
 /*****************************************************************************
  * @brief vector_add_element
- * @param[in] vector_handle *handle:vector句柄  
-             const void *elements:需要添加的条目地址   
+ * @param[in] vector_handle *handle:vector句柄
+             const void *elements:需要添加的条目地址
              UINT32 element_num:需要添加的条目数量
  * @param[out] none
  * @return extern
@@ -54,9 +54,27 @@ extern  vector_handle   *vector_find_element(vector_handle *handle, const INT8 *
 *****************************************************************************/
 extern  INT8 vector_add_element(vector_handle *handle, const void *elements, UINT32 element_num);
 /*****************************************************************************
+ * @brief:vector_size
+ * @param[in]:vector_handle *handle
+ * @param[out]:none
+ * @return:
+ * @details:获取vector中存储的真实数据的数量
+ * @author:sdc
+*****************************************************************************/
+UINT32 vector_size(vector_handle *handle);
+/*****************************************************************************
+ * @brief vector_storage
+ * @param[in] vector_handle *handle:vector句柄
+ * @param[out] none
+ * @return extern
+ * @details 返回vector中存储的真实数据地址
+ * @author sdc
+*****************************************************************************/
+extern  void *vector_storage(vector_handle *handle);
+/*****************************************************************************
  * @brief vector_delete_element
- * @param[in] vector_handle *handle:vector句柄  
-             const INT8 *target:需要删除的字符串   
+ * @param[in] vector_handle *handle:vector句柄
+             const INT8 *target:需要删除的字符串
  * @param[out] none
  * @return extern
  * @details 删除条目
@@ -65,7 +83,7 @@ extern  INT8 vector_add_element(vector_handle *handle, const void *elements, UIN
 extern  INT8 vector_delete_element(vector_handle *handle, const INT8 *target);
 /*****************************************************************************
  * @brief vector_destroy
- * @param[in] vector_handle *handle:vector句柄   
+ * @param[in] vector_handle *handle:vector句柄
  * @param[out] none
  * @return extern
  * @details 删除vector

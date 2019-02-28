@@ -66,7 +66,7 @@ INT8 vector_add_element(vector_handle *handle, const void *elements, UINT32 elem
     if((NULL == handle) || (elements == NULL) || (0 == element_num))
     {
         printf("Invalid parameters\n");
-        result = VECTOR_OPER_FAILED;        
+        result = VECTOR_OPER_FAILED;
     }
     else
     {
@@ -76,7 +76,7 @@ INT8 vector_add_element(vector_handle *handle, const void *elements, UINT32 elem
         for(i = 0; i < element_num; i++)
         {
             temp = (INT8 *)((UINT8 *)elements +  i * handle->element_size);
-        
+
             if(NULL != vector_find_element(handle, (const INT8 *)temp))
             {
                 printf("This element(%s) has existed\n", temp);
@@ -87,7 +87,7 @@ INT8 vector_add_element(vector_handle *handle, const void *elements, UINT32 elem
                 UINT32 cur_size = handle->element_size * handle->count;
                 UINT32 append_size = handle->element_size;
                 INT8 *temp_realloc = NULL;
-                
+
                 temp_realloc = realloc(handle->storage, cur_size + append_size);
                 if(NULL == temp_realloc)
                 {
@@ -128,7 +128,7 @@ INT8 vector_delete_element(vector_handle *handle, const INT8 *target)
     else
     {
         void *element = NULL;
-        
+
         element = (UINT8 *)vector_find_element(handle, target);
         if(NULL == element)
         {
@@ -158,6 +158,40 @@ INT8 vector_delete_element(vector_handle *handle, const INT8 *target)
     }
     __vector_print_element(handle);
     return result;
+}
+
+UINT32 vector_size(vector_handle *handle)
+{
+    UINT32 count = 0;
+
+    if(NULL == handle)
+    {
+        printf("Invalid parameter(NULL)\n");
+        count = 0;
+    }
+    else
+    {
+        count = handle->count - 1;
+    }
+
+    return count;
+}
+
+void *vector_storage(vector_handle *handle)
+{
+    void *value = NULL;
+
+    if(NULL == handle)
+    {
+        printf("Invalid parameter(NULL)\n");
+        value = NULL;
+    }
+    else
+    {
+        value = (void *)((INT8 *)(handle->storage) + handle->element_size);
+    }
+
+    return value;
 }
 
 void vector_destroy(vector_handle *handle)

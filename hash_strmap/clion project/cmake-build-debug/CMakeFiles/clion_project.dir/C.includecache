@@ -8,6 +8,20 @@
 
 E:/c-utils/hash_strmap/datatype.h
 
+E:/c-utils/hash_strmap/hash_strmap.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+datatype.h
+E:/c-utils/hash_strmap/datatype.h
+vector.h
+E:/c-utils/hash_strmap/vector.h
+hash_strmap.h
+E:/c-utils/hash_strmap/hash_strmap.h
+
 E:/c-utils/hash_strmap/hash_strmap.h
 datatype.h
 E:/c-utils/hash_strmap/datatype.h

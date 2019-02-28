@@ -47,14 +47,13 @@ static UINT32 __hash(const INT8 *str)
 }
 
 
-void *hash_strmap_create(UINT32 capacity, UINT32 value_size, INT8 *res)
+void *hash_strmap_create(UINT32 capacity, UINT32 value_size)
 {
     hash_strmap *handle = NULL;
 
     if((0 != (capacity & (capacity -1))) || (2 > value_size))
     {
         printf("Wrong para\n");
-        *res = HASHTAB_PARA_ERR;
         return NULL;
     }
 
@@ -62,7 +61,6 @@ void *hash_strmap_create(UINT32 capacity, UINT32 value_size, INT8 *res)
     if(NULL == handle)
     {
         printf("hash table handle malloc error\n");
-        *res = HASHTAB_LEAK_MEM;
     }
     else
     {
@@ -72,14 +70,12 @@ void *hash_strmap_create(UINT32 capacity, UINT32 value_size, INT8 *res)
         {
             printf("hash table malloc error\n");
             free(handle);
-            *res = HASHTAB_LEAK_MEM;
         }
         else
         {
             memset(handle->hash_table, 0, capacity * sizeof(hash_table_element));
             handle->capacity = capacity;
             handle->element_size = value_size;
-            *res = HASHTAB_OPER_SUCCESS; 
         }
     }
 
@@ -145,16 +141,15 @@ INT8 hash_strmap_insert(void *hash_strmap_handle, const INT8 *key, void *value)
     return rc;
 }
 
-void *hash_strmap_get(void *hash_strmap_handle, const INT8 *key, INT8 *res)
+void *hash_strmap_get(void *hash_strmap_handle, const INT8 *key)
 {
     UINT32 hash_pos = 0;
     void *value = NULL;
     hash_strmap *handle = (hash_strmap *)hash_strmap_handle;
 
-    if((NULL == handle) || (NULL == key) || (NULL == res))
+    if((NULL == handle) || (NULL == key))
     {
         printf("wrong para\n");
-        *res = HASHTAB_PARA_ERR;
         return NULL;
     }
     
@@ -164,21 +159,44 @@ void *hash_strmap_get(void *hash_strmap_handle, const INT8 *key, INT8 *res)
         value = vector_find_element(handle->hash_table[hash_pos].content, key);
         if(NULL == value)
         {
-            *res = HASHTAB_ELE_NOT_EXISTED;
+            printf("ele doesn't exist\n");
         }
         else
         {
-            *res = HASHTAB_ELE_EXISTED;
+            printf("ele exists\n");
         }
     }
     else    /*不存在该key*/
     {
-        *res = HASHTAB_ELE_NOT_EXISTED;
+        value = NULL;
     }
 
     return value;
 }
 
+void *hash_strmap_get_ele_by_index(void *hash_strmap_handle, UINT32 start_index, hashtab_room_info_struct *room_info)
+{
+    hash_strmap *handle = (hash_strmap *)hash_strmap_handle;
+    UINT32 i = 0;
+
+    if((NULL == handle) || (NULL == room_info) || (start_index >= handle->capacity))
+    {
+        printf("wrong para\n");
+        return NULL;
+    }
+
+    for(i = start_index; i < handle->capacity; i++)
+    {
+        if(HASH_TABLE_ELEMENT_EXISTS == handle->hash_table[i].exists)
+        {
+            room_info->index = i;
+            room_info->count = vector_size(handle->hash_table[i].content);
+            return vector_storage(handle->hash_table[i].content);
+        }
+    }
+
+    return NULL;
+}
 INT8 hash_strmap_delete(void *hash_strmap_handle, const INT8 *key)
 {
     UINT32 hash_pos = 0;

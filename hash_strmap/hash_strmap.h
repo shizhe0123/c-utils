@@ -13,6 +13,11 @@ enum
     HASHTAB_OPER_SUCCESS = 0
 };
 
+typedef struct
+{
+    UINT32 index;   /*元素在hash table中的位置*/
+    UINT32 count;   /*该位置下有几个元素*/
+}hashtab_room_info_struct;
 
 /*****************************************************************************
  * @brief hash_strmap_init
@@ -25,7 +30,7 @@ enum
  * @note:1. capacity必须是2的整数次幂
          2. 由于key-value中的value的第一个元素必须是key，因此value_size必须大于2
 *****************************************************************************/
-extern void *hash_strmap_create(UINT32 capacity, UINT32 value_size, INT8 *res);
+extern void *hash_strmap_create(UINT32 capacity, UINT32 value_size);
 /*****************************************************************************
  * @brief hash_strmap_get
  * @param[in] void *hash_strmap_handle  
@@ -35,7 +40,17 @@ extern void *hash_strmap_create(UINT32 capacity, UINT32 value_size, INT8 *res);
  * @details 根据key从哈希表中获取value
  * @author sdc
 *****************************************************************************/
-extern void *hash_strmap_get(void *hash_strmap_handle, const INT8 *key, INT8 *res);
+extern void *hash_strmap_get(void *hash_strmap_handle, const INT8 *key);
+/*****************************************************************************
+ * @brief hash_strmap_get
+ * @param[in] void *hash_strmap_handle
+             UINT32 start_index
+ * @param[out] hashtab_room_info_struct *room_info
+ * @return extern
+ * @details 根据key从哈希表中获取value
+ * @author sdc
+*****************************************************************************/
+extern void *hash_strmap_get_ele_by_index(void *hash_strmap_handle, UINT32 start_index, hashtab_room_info_struct *room_info);
 /*****************************************************************************
  * @brief hash_strmap_insert
  * @param[in] void *hash_strmap_handle  
